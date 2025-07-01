@@ -1,0 +1,21 @@
+import org.hibernate.*;
+import org.hibernate.cfg.Configuration;
+
+public class MainDeleteProduct {
+    public static void main(String[] args) {
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Order.class)
+                .addAnnotatedClass(Product.class)
+                .buildSessionFactory();
+
+        try (Session session = factory.openSession()) {
+            int productId = 1;
+            session.beginTransaction();
+            Product product = session.get(Product.class, productId);
+            if (product != null) {
+                session.remove(product); // does NOT affect orders
+            }
+            session.getTransaction().commit();
+        }
+    }
+}
