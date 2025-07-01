@@ -1,0 +1,20 @@
+import org.hibernate.*;
+import org.hibernate.cfg.Configuration;
+
+public class MainCreateProduct {
+    public static void main(String[] args) {
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Order.class)
+                .addAnnotatedClass(Product.class)
+                .buildSessionFactory();
+
+        try (Session session = factory.openSession()) {
+            Product product = new Product();
+            product.setName("Garlic Bread");
+
+            session.beginTransaction();
+            session.persist(product);
+            session.getTransaction().commit();
+        }
+    }
+}
