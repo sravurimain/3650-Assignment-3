@@ -1,0 +1,25 @@
+import jakarta.persistence.*;
+
+@Entity
+public class Customer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String address;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Professor professor;
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+        professor.setCustomer(this);
+    }
+
+    // Getters and setters...
+}
