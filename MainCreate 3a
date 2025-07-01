@@ -1,0 +1,28 @@
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+public class MainCreate {
+    public static void main(String[] args) {
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Customer.class)
+                .addAnnotatedClass(Professor.class)
+                .buildSessionFactory();
+
+        try (Session session = factory.openSession()) {
+            Customer customer = new Customer();
+            customer.setName("Alice");
+            customer.setAddress("123 Main St");
+
+            Professor professor = new Professor();
+            professor.setOfficeNumber("A-101");
+            professor.setResearchArea("AI");
+
+            customer.setProfessor(professor);
+
+            session.beginTransaction();
+            session.persist(customer); // cascades and inserts professor too
+            session.getTransaction().commit();
+        }
+    }
+}
