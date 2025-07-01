@@ -1,0 +1,25 @@
+import jakarta.persistence.*;
+
+@Entity
+public class Professor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(nullable = false)
+    private String officeNumber;
+
+    @Column(nullable = false)
+    private String researchArea;
+
+    @OneToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    // Getters and setters...
+}
