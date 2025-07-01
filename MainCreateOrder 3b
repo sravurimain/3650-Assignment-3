@@ -1,0 +1,32 @@
+import org.hibernate.*;
+import org.hibernate.cfg.Configuration;
+import java.util.*;
+
+public class MainCreateOrder {
+    public static void main(String[] args) {
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Order.class)
+                .addAnnotatedClass(Product.class)
+                .buildSessionFactory();
+
+        try (Session session = factory.openSession()) {
+            Product p1 = new Product();
+            p1.setName("Pizza");
+
+            Product p2 = new Product();
+            p2.setName("Soda");
+
+            Order order = new Order();
+            order.setDate(new Date());
+            order.setCustomerName("Bob");
+            order.getProducts().add(p1);
+            order.getProducts().add(p2);
+
+            session.beginTransaction();
+            session.persist(p1);
+            session.persist(p2);
+            session.persist(order);
+            session.getTransaction().commit();
+        }
+    }
+}
